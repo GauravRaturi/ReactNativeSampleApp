@@ -9,16 +9,20 @@ phases:
       
    pre_build:
     commands:
+      - git config --global url."https://github.com/".insteadOf git://github.com/
       - npm install
-      - yarn
       
    build:
     commands: 
       - npm i --save-dev @react-native-community/cli
+      - npm install -g react-native-cli
+      - yarn
+      - react-native link
+      - react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
       - cd android
       - chmod +x gradlew
-      #- ./gradlew assembleDebug
-      - ./gradlew assembleDebug
+      - ./gradlew clean
+      - ./gradlew app:assembleDebug
       
 artifacts:
   files:
